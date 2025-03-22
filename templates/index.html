@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <script>
+        async function getRecommendations() {
+            let movie = document.getElementById("movieInput").value;
+            try {
+                let response = await fetch("/recommend", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ movie: movie })
+                });
+                if (!response.ok) throw new Error("Server error!");
+                let data = await response.json();
+                document.getElementById("results").innerHTML = "<b>Recommendations:</b> " + data.recommended_movies.join(", ");
+            } catch (error) {
+                document.getElementById("results").innerHTML = "<b>Error:</b> Unable to fetch recommendations.";
+            }
+        }
+
+        async function analyzeReview() {
+            let review = document.getElementById("reviewInput").value;
+            try {
+                let response = await fetch("/sentiment", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ review: review })
+                });
+                if (!response.ok) throw new Error("Server error!");
+                let data = await response.json();
+                document.getElementById("sentimentResult").innerHTML = "<b>Sentiment:</b> " + data.sentiment;
+            } catch (error) {
+                document.getElementById("sentimentResult").innerHTML = "<b>Error:</b> Unable to analyze sentiment.";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Movie Recommendation System</h1>
+    
+    <div class="container">
+        <h3>Get Movie Recommendations</h3>
+        <input type="text" id="movieInput" placeholder="Enter movie name">
+        <button onclick="getRecommendations()">Recommend</button>
+        <p id="results"></p>
+    </div>
+
+    <div class="container">
+        <h3>Analyze Review Sentiment</h3>
+        <textarea id="reviewInput" placeholder="Enter your review"></textarea>
+        <button onclick="analyzeReview()">Analyze Sentiment</button>
+        <p id="sentimentResult"></p>
+    </div>
+
+</body>
+</html>
