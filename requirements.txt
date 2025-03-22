@@ -1,0 +1,12 @@
+python3
+flask
+numpy
+pandas
+scikit-learn
+scipy
+nltk
+tensorflow
+torch
+joblib
+pickle-mixin
+requests
