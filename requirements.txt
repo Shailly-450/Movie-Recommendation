@@ -10,3 +10,4 @@ torch
 joblib
 pickle-mixin
 requests
+gunicorn
